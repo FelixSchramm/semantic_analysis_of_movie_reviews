@@ -8,7 +8,7 @@ This project implements a Word2Vec (Continuous Bag-of-Words) model to generate w
 
 A live version of the application can be accessed here:
 
-[Link to your deployed Streamlit App]
+LINK
 
 ## Core Functionality
 
@@ -55,11 +55,11 @@ To run the application locally, please follow these steps:
     ```
 
 ## Repository Structure
-
+    
 
 .
 ├── app.py              # Main Streamlit application script
-├── word2vec.h5         # Pre-trained Keras Word2Vec model
+├── word2vec.h5             # Pre-trained Keras Word2Vec model
 ├── requirements.txt    # Python package dependencies
 └── README.md           # Project documentation
 
