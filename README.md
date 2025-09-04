@@ -27,43 +27,5 @@ LINK
 
 The model was trained on the [Movie Review Dataset](https://train-exo.s3.eu-west-1.amazonaws.com/2317/Movie%20Review.csv), which contains 25,000 movie reviews with sentiment labels.
 
-## Local Deployment
-
-To run the application locally, please follow these steps:
-
-1.  **Clone the Repository**
-    ```bash
-    git clone [https://github.com/your-username/your-repository-name.git](https://github.com/your-username/your-repository-name.git)
-    cd your-repository-name
-    ```
-
-2.  **Install Git LFS and Retrieve Model**
-    This project utilizes Git LFS for the model file.
-    ```bash
-    git lfs install
-    git lfs pull
-    ```
-
-3.  **Install Dependencies**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4.  **Launch the Application**
-    ```bash
-    streamlit run app.py
-    ```
-
-## Repository Structure
-    
-
-.
-├── app.py              # Main Streamlit application script
-├── word2vec.h5             # Pre-trained Keras Word2Vec model
-├── requirements.txt    # Python package dependencies
-└── README.md           # Project documentation
-
-
-## Acknowledgements
 
 This project was developed based on the "Bonus: Deep Learning" module provided by DataScientest.
