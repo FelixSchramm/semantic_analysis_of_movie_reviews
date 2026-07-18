@@ -16,8 +16,9 @@ notebook cell, or line). No claim is included without evidence.
 - **Tracked files:** `.python-version`, `MovieReview.csv`, `README.md`, `app.py`,
   `code.ipynb`, `requirements.txt`
 
-The briefings referenced below live (temporarily) under `docs/issues/` and are
-being migrated into the GitHub issue tracker. See the *Lifecycle* note at the end.
+Each finding below is tracked as a GitHub issue (linked in the prioritised list
+at the end). See the *Lifecycle* note for how long this document itself should
+live.
 
 ---
 
@@ -106,27 +107,27 @@ structure/professionalism · **P2** domain depth/differentiation · **P3** polis
 
 ---
 
-## Prioritised list → briefings
+## Prioritised list → GitHub issues
 
-> These links point at the working briefings under `docs/issues/`. After the
-> issues are opened on GitHub, this table is updated to point at the tracker
-> (see Lifecycle note).
+> Each finding is tracked as a GitHub issue. The working briefings that seeded
+> these issues previously lived under `docs/issues/` and have been removed now
+> that the tracker is the source of truth (see Lifecycle note).
 
-| Priority | Briefing | Title |
-|----------|----------|-------|
-| P0 | [`01-notebook-reproducibility.md`](issues/01-notebook-reproducibility.md) | Fix broken notebook cells and re-execute end-to-end |
-| P0 | [`02-training-artifacts.md`](issues/02-training-artifacts.md) | Make the trained model and tokenizer reproducible and available |
-| P0 | [`03-streamlit-app.md`](issues/03-streamlit-app.md) | Ship the real Streamlit app as `app.py` and fix its runtime bugs |
-| P0 | [`04-readme-truthfulness.md`](issues/04-readme-truthfulness.md) | Align the README with what the repository actually contains |
-| P1 | [`05-license.md`](issues/05-license.md) | Add an explicit open-source LICENSE |
-| P1 | [`06-gitignore.md`](issues/06-gitignore.md) | Add a `.gitignore` for Python / ML artifacts |
-| P1 | [`07-how-to-run.md`](issues/07-how-to-run.md) | Add reproducible "How to run" instructions |
-| P1 | [`08-dataset-handling.md`](issues/08-dataset-handling.md) | Stop committing the 32 MB dataset as a raw git blob |
-| P1 | [`09-pin-dependencies.md`](issues/09-pin-dependencies.md) | Pin dependencies and align the Python version |
-| P1 | [`10-modularize-src.md`](issues/10-modularize-src.md) | Extract an importable `src/` package |
-| P1 | [`11-tests-ci.md`](issues/11-tests-ci.md) | Add tests and CI (ruff + pytest on synthetic data) |
-| P2 | [`12-gensim-evaluation.md`](issues/12-gensim-evaluation.md) | Use `gensim` and add intrinsic evaluation + visualization |
-| P3 | [`13-polish.md`](issues/13-polish.md) | Remove course artifacts, debug leftovers, and interactive downloads |
+| Priority | Issue | Title |
+|----------|-------|-------|
+| P0 | [#1](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/1) | Fix broken notebook cells and re-execute end-to-end |
+| P0 | [#2](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/2) | Make the trained model and tokenizer reproducible and available |
+| P0 | [#3](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/3) | Ship the real Streamlit app as `app.py` and fix its runtime bugs |
+| P0 | [#4](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/4) | Align the README with what the repository actually contains |
+| P1 | [#5](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/5) | Add an explicit open-source LICENSE |
+| P1 | [#6](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/6) | Add a `.gitignore` for Python / ML artifacts |
+| P1 | [#7](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/7) | Add reproducible "How to run" instructions |
+| P1 | [#8](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/8) | Stop committing the 32 MB dataset as a raw git blob |
+| P1 | [#9](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/9) | Pin dependencies and align the Python version |
+| P1 | [#10](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/10) | Extract an importable `src/` package |
+| P1 | [#11](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/11) | Add tests and CI (ruff + pytest on synthetic data) |
+| P2 | [#12](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/12) | Use `gensim` and add intrinsic evaluation + visualization |
+| P3 | [#13](https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews/issues/13) | Remove course artifacts, debug leftovers, and interactive downloads |
 
 **Suggested order of attack:** 01 → 02 → 03 → 04 (the P0 credibility chain),
 then the P1 hygiene items (05–11), then 12 (depth), then 13 (polish).
