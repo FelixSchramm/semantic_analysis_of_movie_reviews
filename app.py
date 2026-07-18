@@ -1,128 +1,103 @@
-import pandas as pd
+"""Streamlit demo for the movie-review Word2Vec model.
+
+Explore the learned embeddings interactively:
+
+* **Find similar words** — the 10 nearest neighbours of a word by cosine
+  similarity.
+* **Word analogies** — vector arithmetic such as ``king - man + woman``.
+
+Run from the repo root with the model artifact present::
+
+    python -m src.train           # produces word2vec.wv (see README / issue #2)
+    streamlit run app.py
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
 import streamlit as st
-import nltk
-from nltk.corpus import stopwords
-from sklearn.model_selection import train_test_split
-import numpy as np
+from gensim.models import KeyedVectors
+
+from src.preprocessing import normalize_word
+
+WV_PATH = "word2vec.wv"
+
+st.set_page_config(page_title="Movie-Review Word2Vec", layout="wide")
 
 
-# (a) Load the data file under the name df and explore it.
-#Since the Word2Vec approach only requires text, we do not need the "sentiment" column of the dataframe.
-
-# (b) Delete the "sentiment" column from df.
-
-df = pd.read_csv("MovieReview.csv")
-
-print(df.head())
-print(df.shape)
-
-df = df.drop('sentiment', axis=1)
-
-# (c) Add the following code to clean up the data and to remove stopwords.
-
-import re
-import unicodedata
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-
-nltk.download()
-stop_words = stopwords.words('english')
-
-# Converts the unicode file to ascii
-def unicode_to_ascii(s):
-    return ''.join(c for c in unicodedata.normalize('NFD', s)
-        if unicodedata.category(c) != 'Mn')
-
-def preprocess_sentence(w):
-    w = unicode_to_ascii(w.lower().strip())
-    # creating a space between a word and the punctuation following it
-    # eg: "he is a boy." => "he is a boy ."
-    w = re.sub(r"([?.!,¿])", r" \1 ", w)
-    w = re.sub(r'[" "]+', " ", w)
-    # replacing everything with space except (a-z, A-Z, ".", "?", "!", ",")
-    w = re.sub(r"[^a-zA-Z?.!]+", " ", w)
-    w = re.sub(r'\b\w{0,2}\b', '', w)
-
-    # remove stopword
-    mots = word_tokenize(w.strip())
-    mots = [mot for mot in mots if mot not in stop_words]
-    return ' '.join(mots).strip()
-
-df.review = df.review.apply(lambda x :preprocess_sentence(x))
-df.head()
+@st.cache_resource
+def load_vectors(path: str = WV_PATH) -> KeyedVectors:
+    """Load the trained KeyedVectors (cached for the session)."""
+    return KeyedVectors.load(path)
 
 
-# (d) Define a tokenizer object using the tensorflow.keras.preprocessing.text tokenizer constructor, specifying a dictionary word limit of 10000.
-# (e) Update the tokenizer dictionary using the fit_on_texts method.
+def _lookup(word: str, wv: KeyedVectors) -> tuple[str | None, str | None]:
+    """Normalise a user word and check it is in the vocabulary.
 
-import tensorflow as tf
-tokenizer = tf.keras.preprocessing.text.Tokenizer(num_words=10000)
-tokenizer.fit_on_texts(df.review)
-
-# (f) Store the word-index matching dictionary in the word2idx variable, and the index-word matching dictionary in the idx2word variable, using the word_index attribute of the tokenizer.
-# (h) Store the size of the dictionary in the vocab_size variable, using the num_words attribute of the tokenizer.
-
-word2idx = tokenizer.word_index
-idx2word = tokenizer.index_word
-vocab_size = tokenizer.num_words
-
-# ____________________ MODELLING  _____________________ 
-# (g) Add the following code to create the data set (X, Y).
+    Returns ``(token, error)`` where exactly one element is not ``None``.
+    """
+    token = normalize_word(word)
+    if token is None:
+        return None, f"'{word}' reduces to nothing after preprocessing (stop word or punctuation)."
+    if token not in wv:
+        return None, f"'{token}' is not in the model vocabulary."
+    return token, None
 
 
+st.title("Word2Vec — Semantic Analysis of Movie Reviews")
+st.caption(
+    "Word embeddings trained with gensim on 25,000 movie reviews. "
+    "Words are normalised with the same preprocessing used at training time."
+)
 
-import numpy as np
+if not Path(WV_PATH).exists():
+    st.error(
+        f"Model artifact '{WV_PATH}' not found. Train it first with "
+        "`python -m src.train` (see the README) or download it from the release."
+    )
+    st.stop()
 
+wv = load_vectors()
 
-def sentenceToData(tokens, WINDOW_SIZE):
-    window = np.concatenate((np.arange(-WINDOW_SIZE,0),np.arange(1,WINDOW_SIZE+1)))
-    X,Y=([],[])
-    for word_index, word in enumerate(tokens) :
-        if ((word_index - WINDOW_SIZE >= 0) and (word_index + WINDOW_SIZE <= len(tokens) - 1)) :
-            X.append(word)
-            Y.append([tokens[word_index-i] for i in window])
-    return X, Y
+# --- Similarity -----------------------------------------------------------
+st.header("Find similar words")
+sim_word = st.text_input("Enter a word:", "movie")
+if st.button("Find similar"):
+    token, error = _lookup(sim_word, wv)
+    if error:
+        st.warning(error)
+    else:
+        results = wv.most_similar(token, topn=10)
+        st.subheader(f"Words most similar to '{token}'")
+        st.table(
+            {
+                "word": [w for w, _ in results],
+                "cosine similarity": [round(float(s), 3) for _, s in results],
+            }
+        )
 
-
-WINDOW_SIZE = 5
-
-X, Y = ([], [])
-for review in df.review:
-    for sentence in review.split("."):
-        word_list = tokenizer.texts_to_sequences([sentence])[0]
-        if len(word_list) >= WINDOW_SIZE:
-            Y1, X1 = sentenceToData(word_list, WINDOW_SIZE//2)
-            X.extend(X1)
-            Y.extend(Y1)
-    
-X = np.array(X).astype(int)
-y = np.array(Y).astype(int).reshape([-1,1])
-
-
-
-
-# (h) Create the model architecture. The Embedding layer will take an input of size 10000 and an output of size 300. The Dense layer will consist of 10000 neurons and a SoftMax activation function.
-
-
-from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Embedding, Dense, GlobalAveragePooling1D
-
-embedding_dim = 300
-model = Sequential()
-model.add(Embedding(vocab_size, embedding_dim))
-model.add(GlobalAveragePooling1D())
-model.add(Dense(vocab_size, activation='softmax'))
-
-
-
-# (i) Compile the model.
-# (j) Train the model during 50 epochs.
-
-model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-model.fit(X, y, batch_size = 128, epochs=50)
-
-
-# g) Save the model in H5 format using the save method in Keras.
-
-model.save("word2vec.h5") 
+# --- Analogies ------------------------------------------------------------
+st.header("Word analogies")
+st.write("Solve *word1 − word2 + word3*, e.g. `king − man + woman`.")
+col1, col2, col3 = st.columns(3)
+w1 = col1.text_input("word1 (add)", "king")
+w2 = col2.text_input("word2 (subtract)", "man")
+w3 = col3.text_input("word3 (add)", "woman")
+if st.button("Solve analogy"):
+    t1, e1 = _lookup(w1, wv)
+    t2, e2 = _lookup(w2, wv)
+    t3, e3 = _lookup(w3, wv)
+    errors = [e for e in (e1, e2, e3) if e]
+    if errors:
+        for e in errors:
+            st.warning(e)
+    else:
+        results = wv.most_similar(positive=[t1, t3], negative=[t2], topn=5)
+        st.subheader(f"{t1} − {t2} + {t3} ≈")
+        st.table(
+            {
+                "word": [w for w, _ in results],
+                "cosine similarity": [round(float(s), 3) for _, s in results],
+            }
+        )
