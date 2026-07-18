@@ -17,8 +17,8 @@ LINK
 
 ## Technical Stack
 
-* **Language**: Python 3.8+
-* **Machine Learning**: TensorFlow, Keras, Scikit-learn
+* **Language**: Python 3.11
+* **Machine Learning**: gensim (Word2Vec), Scikit-learn
 * **Data Handling**: Pandas, NLTK
 * **Web Framework**: Streamlit
 * **Version Control**: Git, Git LFS for large file storage
