@@ -6,14 +6,13 @@ This project implements a Word2Vec (Continuous Bag-of-Words) model to generate w
 
 ## Interactive Demonstration
 
-A live version of the application can be accessed here:
-
-LINK
+The Streamlit application runs locally — see [Getting Started](#getting-started).
+A hosted demo link will be added here once the app is deployed.
 
 ## Core Functionality
 
 * **Semantic Similarity**: Users can input a word to retrieve a ranked list of the 10 most semantically similar words, calculated using cosine similarity on their vector representations.
-* **Vector-based Analogies**: The application supports word arithmetic to solve analogies (e.g., `king - man + woman`), demonstrating the model's grasp of complex semantic relationships.
+* **Vector-based Analogies**: The application supports word arithmetic to explore analogies (e.g., `king - man + woman`). On this 25,000-review corpus the embeddings reach roughly 80% top-5 accuracy on a small curated analogy set — see the evaluation section of `code.ipynb` for the reproducible numbers and a t-SNE visualization.
 
 ## Technical Stack
 
@@ -21,7 +20,7 @@ LINK
 * **Machine Learning**: gensim (Word2Vec), Scikit-learn
 * **Data Handling**: Pandas, NLTK
 * **Web Framework**: Streamlit
-* **Version Control**: Git, Git LFS for large file storage
+* **Version Control**: Git (dataset hosted as a release asset — see Getting Started)
 
 ## Getting Started
 
