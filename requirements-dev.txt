@@ -1,7 +1,0 @@
-# Dependencies for running the test suite and linter in CI.
-# Kept minimal on purpose: the preprocessing/data tests use only pandas + nltk,
-# so CI does not need gensim/streamlit/tensorflow or the full dataset.
-pandas~=3.0
-nltk~=3.10
-pytest~=9.1
-ruff~=0.15

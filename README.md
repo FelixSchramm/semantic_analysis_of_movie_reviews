@@ -26,37 +26,38 @@ A hosted demo link will be added here once the app is deployed.
 
 These steps take you from a fresh clone to a running demo.
 
+This project uses [uv](https://docs.astral.sh/uv/) for dependency management.
+
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/FelixSchramm/semantic_analysis_of_movie_reviews.git
    cd semantic_analysis_of_movie_reviews
    ```
-2. **Create a virtual environment (Python 3.11) and install dependencies:**
+2. **Install uv and the project dependencies** (uv creates the virtual environment automatically):
    ```bash
-   python3.11 -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
+   # install uv once: https://docs.astral.sh/uv/getting-started/installation/
+   uv sync
    ```
 3. **Download the dataset** (hosted as a GitHub release asset):
    ```bash
-   python scripts/download_data.py   # fetches MovieReview.csv
+   uv run python scripts/download_data.py   # fetches MovieReview.csv
    ```
 4. **Download the required NLTK data (non-interactive):**
    ```bash
-   python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt'); nltk.download('punkt_tab')"
+   uv run python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt'); nltk.download('punkt_tab')"
    ```
 5. **Train the model** (writes `word2vec.model` and `word2vec.wv` to the current directory):
    ```bash
-   python -m src.train --data MovieReview.csv --out .
+   uv run python -m src.train --data MovieReview.csv --out .
    ```
 6. **Launch the interactive app:**
    ```bash
-   streamlit run app.py
+   uv run streamlit run app.py
    ```
 
 To reproduce the analysis end-to-end instead, execute the notebook:
 ```bash
-jupyter nbconvert --to notebook --execute --inplace code.ipynb
+uv run --with jupyter jupyter nbconvert --to notebook --execute --inplace code.ipynb
 ```
 
 ## Data Source
