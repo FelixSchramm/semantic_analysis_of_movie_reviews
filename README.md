@@ -29,3 +29,7 @@ The model was trained on the [Movie Review Dataset](https://train-exo.s3.eu-west
 
 
 This project was developed based on the "Bonus: Deep Learning" module provided by DataScientest.
+
+## License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
