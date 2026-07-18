@@ -1,0 +1,36 @@
+# Byte-compiled / optimized Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging / build
+*.egg-info/
+build/
+dist/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Trained model artifacts (distributed via a Release or Git LFS, not raw git)
+word2vec.model
+word2vec.model.*
+word2vec.wv
+word2vec.wv.*
+*.npy
+*.pkl
+
+# Dataset (hosted as a GitHub release asset; fetch with scripts/download_data.py)
+MovieReview.csv
+
+# NLTK data downloaded at runtime
+nltk_data/
+
+# OS files
+.DS_Store
+Thumbs.db
