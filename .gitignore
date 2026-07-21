@@ -25,9 +25,6 @@ word2vec.wv.*
 *.npy
 *.pkl
 
-# Dataset (hosted as a GitHub release asset; fetch with scripts/download_data.py)
-MovieReview.csv
-
 # NLTK data downloaded at runtime
 nltk_data/
 

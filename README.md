@@ -66,3 +66,7 @@ The model was trained on a movie review dataset of 25,000 reviews with sentiment
 
 
 This project was developed based on the "Bonus: Deep Learning" module provided by DataScientest.
+
+## License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
