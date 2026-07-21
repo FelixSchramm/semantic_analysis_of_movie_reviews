@@ -1,7 +1,0 @@
-gensim~=4.4
-matplotlib~=3.11
-nltk~=3.10
-numpy~=2.4
-pandas~=3.0
-scikit-learn~=1.9
-streamlit~=1.59
